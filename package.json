@@ -1,0 +1,48 @@
+{
+  "name": "clubpanel",
+  "version": "1.0.0",
+  "description": "ClubPanel is a modular open-source webpanel for managing any club.",
+  "main": "bundle.js",
+  "scripts": {
+    "build:server": "webpack --config webpack.config.server.js",
+    "build:client": "webpack --config webpack.config.client.js",
+    "build": "npm run build:client && npm run build:server",
+    "start": "node ./dist/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/uellenberg/ClubPanel.git"
+  },
+  "author": "Jonah Uellenberg",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/uellenberg/ClubPanel/issues"
+  },
+  "homepage": "https://github.com/uellenberg/ClubPanel#readme",
+  "private": false,
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.0.6",
+    "@types/express": "^4.17.12",
+    "@types/node": "^15.6.2",
+    "@types/react": "^17.0.9",
+    "@types/react-dom": "^17.0.6",
+    "@typescript-eslint/eslint-plugin": "^4.26.0",
+    "@typescript-eslint/parser": "^4.26.0",
+    "clean-webpack-plugin": "^4.0.0-alpha.0",
+    "copy-webpack-plugin": "^9.0.0",
+    "eslint": "^7.27.0",
+    "eslint-plugin-react": "^7.24.0",
+    "ts-loader": "^9.2.2",
+    "typescript": "^4.3.2",
+    "webpack": "^5.38.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-manifest-plugin": "^3.1.1",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
