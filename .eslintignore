@@ -2,3 +2,4 @@ webpack.config.server.js
 webpack.config.client.js
 node_modules
 dist
+config

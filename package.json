@@ -7,7 +7,9 @@
     "build:server": "webpack --config webpack.config.server.js",
     "build:client": "webpack --config webpack.config.client.js",
     "build": "npm run build:client && npm run build:server",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "buildstart": "npm run build && npm run start",
+    "watch": "npm-watch"
   },
   "repository": {
     "type": "git",
@@ -21,10 +23,16 @@
   "homepage": "https://github.com/uellenberg/ClubPanel#readme",
   "private": false,
   "dependencies": {
+    "@chakra-ui/react": "^1.6.3",
+    "@emotion/react": "^11",
+    "@emotion/styled": "^11",
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "framer-motion": "^4",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-icons": "^4.2.0",
+    "react-remove-scroll": "^2.4.2"
   },
   "devDependencies": {
     "@types/ejs": "^3.0.6",
@@ -38,11 +46,20 @@
     "copy-webpack-plugin": "^9.0.0",
     "eslint": "^7.27.0",
     "eslint-plugin-react": "^7.24.0",
+    "npm-watch": "^0.9.0",
     "ts-loader": "^9.2.2",
     "typescript": "^4.3.2",
     "webpack": "^5.38.1",
     "webpack-cli": "^4.7.0",
     "webpack-manifest-plugin": "^3.1.1",
     "webpack-node-externals": "^3.0.0"
+  },
+  "watch": {
+    "buildstart": {
+      "patterns": [
+        "src"
+      ],
+      "extensions": "ts,tsx"
+    }
   }
 }
