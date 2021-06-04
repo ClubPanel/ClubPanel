@@ -1,32 +1,48 @@
 import Header from "../components/header";
 import React from "react";
 import {GetKey} from "../shared/config/configManager";
-import {InferGetStaticPropsType} from "next";
-import {LoadModules} from "../shared/module/moduleLoader";
+import {propsMap, SetupModules} from "../lib/moduleHelpers";
 
-const Page = ({ name }: InferGetStaticPropsType<typeof getStaticProps>) => {
+const Page = ({ name }: {name: string}) => {
   return (
     <Header name={name}/>
   );
 };
 
-export const getStaticProps = () => {
+const defaultProps = {
+  name: GetKey("main", "name")
+};
+
+export const getStaticProps = async ({params}) => {
+  await SetupModules();
+
+  const props = propsMap[(params.name || []).join("/")];
+  const propsKeys = Object.keys(props);
+
+  for (const key of Object.keys(defaultProps)) {
+    if(propsKeys.includes(key)) continue;
+
+    props[key] = defaultProps[key];
+  }
+
   return {
-    props: {
-      name: GetKey("main", "name")
-    }
+    props
   };
 };
 
 export async function getStaticPaths() {
-  await LoadModules();
+  await SetupModules();
 
-  return {
-    paths: [
-      { params: { name: [] } }
-    ],
+  const output = {
+    paths: [],
     fallback: false
   };
+
+  for (const key of Object.keys(propsMap)) {
+    output.paths.push({params: {name: key.split("/").filter(Boolean)}});
+  }
+
+  return output;
 }
 
 export default Page;

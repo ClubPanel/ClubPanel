@@ -9,7 +9,13 @@ app.prepare()
   .then(async () => {
     const server = express();
 
-    await LoadModules(true);
+    const modules = await LoadModules(true);
+
+    for (const module of modules) {
+      if(!module.server) continue;
+
+      module.server?.register(server);
+    }
 
     server.get("*", (req, res) => {
       return handle(req, res);
