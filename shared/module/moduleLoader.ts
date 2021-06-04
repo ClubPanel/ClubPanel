@@ -15,7 +15,7 @@ export async function LoadModules(useCjs?: boolean) : Promise<Module[]> {
   const output: Module[] = [];
 
   for (const path of fs.readdirSync("./modules")) {
-    const module: Module = useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, "index.js"))) : imports[path + "/" + "index.ts"];
+    const module: Module = (useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, "index.js"))) : imports[path + "/" + "index.ts"]).default;
 
     module.configs?.register();
 
