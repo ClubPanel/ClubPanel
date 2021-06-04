@@ -17,13 +17,7 @@ const GithubIcon = (props: React.ComponentProps<"svg">) => (
   </svg>
 );
 
-const NPMIcon = (props: React.ComponentProps<"svg">) => (
-  <svg viewBox="0 0 2500 2500" xmlns="http://www.w3.org/2000/svg" width="20" height="20" {...props}>
-    <path d="M1241.5 268.5h-973v1962.9h972.9V763.5h495v1467.9h495V268.5z" fill="currentColor"/>
-  </svg>
-);
-
-const HeaderContent = () => {
+const HeaderContent = ({ name }: { name: string }) => {
   const mobileNav = useDisclosure();
 
   const mobileNavBtnRef = React.useRef<HTMLButtonElement>();
@@ -37,7 +31,7 @@ const HeaderContent = () => {
       <HStack w="100%" h="100%" px="6" align="center" justify="space-between">
         <Flex align="center">
           <chakra.a href="/" display="block" aria-label="ClubPanel Homepage">
-            <Logo/>
+            <Logo name={name}/>
           </chakra.a>
         </Flex>
 
@@ -80,7 +74,7 @@ const HeaderContent = () => {
         />
       </HStack>
 
-      <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
+      <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} name={name} />
     </>
   );
 };
@@ -90,7 +84,7 @@ interface MobileNavContentProps {
     onClose?: () => void;
 }
 
-export function MobileNavContent(props: MobileNavContentProps) : JSX.Element {
+export function MobileNavContent(props: MobileNavContentProps & { name: string }) : JSX.Element {
   const { isOpen, onClose } = props;
   const closeBtnRef = React.useRef<HTMLButtonElement>();
 
@@ -140,7 +134,7 @@ export function MobileNavContent(props: MobileNavContentProps) : JSX.Element {
             >
               <Box>
                 <Flex justify="space-between" px="6" pt="5" pb="4">
-                  <Logo/>
+                  <Logo name={props.name}/>
                   <IconButton
                     display={{ base: "flex", md: "none" }}
                     aria-label="Close menu"
@@ -194,7 +188,7 @@ const ScrollView = (props: BoxProps & { onScroll?: any }) => {
   );
 };
 
-const Header = () : JSX.Element => {
+const Header = ({ name }: { name: string }) : JSX.Element => {
   const [_, setY] = React.useState(0);
   const ref = React.useRef<HTMLHeadingElement>();
 
@@ -218,7 +212,7 @@ const Header = () : JSX.Element => {
       width="full"
     >
       <chakra.div height="4.5rem" mx="auto" maxW="8xl">
-        <HeaderContent/>
+        <HeaderContent name={name}/>
       </chakra.div>
     </chakra.header>
   );

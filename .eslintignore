@@ -1,5 +1,6 @@
-webpack.config.server.js
-webpack.config.client.js
+next.config.js
+next-env.d.ts
 node_modules
 dist
 config
+.next
