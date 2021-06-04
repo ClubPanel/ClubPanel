@@ -1,12 +1,15 @@
 import express from "express";
 import next from "next";
+import {LoadModules} from "../shared/module/moduleLoader";
 
 const app = next({ dev: process.argv[2] === "dev" });
 const handle = app.getRequestHandler();
 
 app.prepare()
-  .then(() => {
+  .then(async () => {
     const server = express();
+
+    await LoadModules(true);
 
     server.get("*", (req, res) => {
       return handle(req, res);

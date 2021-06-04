@@ -16,7 +16,6 @@
     "jsx": "preserve",
     "moduleResolution": "node",
     "preserveConstEnums": true,
-    "resolveJsonModule": true,
     "removeComments": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,
@@ -24,7 +23,8 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "resolveJsonModule": true
   },
   "compileOnSave": true,
   "include": [
