@@ -1,6 +1,10 @@
 import express from "express";
 import next from "next";
 import {LoadModules} from "../shared/module/moduleLoader";
+import * as database from "../shared/database/database";
+import {GetConfig} from "../shared/config/configManager";
+import session from "express-session";
+import {MainConfig} from "../shared/config/types/mainConfig";
 
 const app = next({ dev: process.argv[2] === "dev" });
 const handle = app.getRequestHandler();
@@ -8,6 +12,12 @@ const handle = app.getRequestHandler();
 app.prepare()
   .then(async () => {
     const server = express();
+
+    const config = GetConfig<MainConfig>("main");
+
+    await database.Setup();
+
+    server.use(session(config.cookie));
 
     const modules = await LoadModules(true);
 
@@ -26,6 +36,6 @@ app.prepare()
     });
   })
   .catch((ex) => {
-    console.error(ex.stack);
+    console.error(ex);
     process.exit(1);
   });

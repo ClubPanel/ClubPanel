@@ -1,7 +1,8 @@
 import Header from "../components/header";
 import React from "react";
-import {GetKey} from "../shared/config/configManager";
+import {GetConfig} from "../shared/config/configManager";
 import {propsMap, SetupModules} from "../lib/moduleHelpers";
+import {MainConfig} from "../shared/config/types/mainConfig";
 
 const Page = ({ name }: {name: string}) => {
   return (
@@ -10,7 +11,7 @@ const Page = ({ name }: {name: string}) => {
 };
 
 const defaultProps = {
-  name: GetKey("main", "name")
+  name: GetConfig<MainConfig>("main").name
 };
 
 export const getStaticProps = async ({params}) => {

@@ -2,6 +2,7 @@ import {Config} from "./types/config";
 import {configs as configNames, RegisterConfig} from "./configFilesManager";
 import * as fs from "fs";
 import * as Path from "path";
+import {object} from "prop-types";
 
 let configs: Record<string, Config> = {};
 
@@ -14,15 +15,41 @@ export const ReloadConfigs = () => {
     const path = Path.join("./config", configName.name);
 
     if(!fs.existsSync(path)) {
-      fs.writeFileSync(path, configName.default);
+      fs.writeFileSync(path, JSON.stringify(JSON.parse(configName.default), null, 4));
     }
 
-    configs[Path.basename(configName.name, ".json")] = JSON.parse(fs.readFileSync(path, "utf-8"));
+    let parsed: object;
+    try {
+      parsed = JSON.parse(fs.readFileSync(path, "utf-8"));
+    } catch(e){
+      throw new Error("Error loading " + configName.name + ": " + e.message);
+    }
+
+    const defaultConfig = JSON.parse(configName.default);
+
+    validateConfig(path, parsed, defaultConfig);
+
+    configs[Path.basename(configName.name, ".json")] = parsed;
   }
 }
 
-export function GetKey<T>(config: string, key: string) : T {
-  return configs[config][key] as T;
+const validateConfig = (path: string, config: object, defaultConfig: object) => {
+  let flag = false;
+  for (let key of Object.keys(defaultConfig)) {
+    if(!config.hasOwnProperty(key)) {
+      flag = true;
+
+      config[key] = defaultConfig[key];
+    }
+  }
+
+  if(flag){
+    fs.writeFileSync(path, JSON.stringify(config, null, 4));
+  }
+}
+
+export function GetConfig<T>(config: string) : T {
+  return configs[config] as T;
 }
 
 ReloadConfigs();
