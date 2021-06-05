@@ -35,11 +35,20 @@ export const ReloadConfigs = () => {
 
 const validateConfig = (path: string, config: object, defaultConfig: object) => {
   let flag = false;
+
   for (let key of Object.keys(defaultConfig)) {
     if(!config.hasOwnProperty(key)) {
       flag = true;
 
       config[key] = defaultConfig[key];
+    }
+  }
+
+  for(let key of Object.keys(config)) {
+    if(!defaultConfig.hasOwnProperty(key)) {
+      flag = true;
+
+      delete config[key];
     }
   }
 

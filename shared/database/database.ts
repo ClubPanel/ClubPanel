@@ -1,23 +1,20 @@
-import {Db, MongoClient} from "mongodb";
 import {GetConfig} from "../config/configManager";
 import {MainConfig} from "../config/types/mainConfig";
+import mongoose from "mongoose";
 
-export let Database: Db;
+export let Database: mongoose.Mongoose;
 
 export const Setup = () : Promise<void> => {
   return new Promise<void>((resolve, reject) => {
     const config = GetConfig<MainConfig>("main");
 
-    const client = new MongoClient(config.dbURL);
+    mongoose.connect(config.dbURL, { useNewUrlParser: true, useUnifiedTopology: true }).then(client => {
+      console.log("Established connection with database.");
 
-    client.connect(function(err) {
-      if(err) return reject(new Error("Failed to connect to database! Error: " + err.message));
-
-      console.log("Established connection with database");
-
-      Database = client.db(config.dbName);
-
+      Database = client;
       resolve();
+    }).catch(e => {
+      reject(new Error("Failed to connect to database! Error: " + e.message));
     });
   });
 };
