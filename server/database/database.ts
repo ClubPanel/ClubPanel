@@ -1,5 +1,5 @@
-import {GetConfig} from "../config/configManager";
-import {MainConfig} from "../config/types/mainConfig";
+import {GetConfig} from "../../shared/config/configManager";
+import {MainConfig} from "../../shared/config/types/mainConfig";
 import mongoose from "mongoose";
 
 export let Database: mongoose.Mongoose;
