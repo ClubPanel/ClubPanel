@@ -14,14 +14,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/uellenberg/ClubPanel.git"
+    "url": "git+https://github.com/ClubPanel/ClubPanel.git"
   },
   "author": "Jonah Uellenberg",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/uellenberg/ClubPanel/issues"
+    "url": "https://github.com/ClubPanel/ClubPanel/issues"
   },
-  "homepage": "https://github.com/uellenberg/ClubPanel#readme",
+  "homepage": "https://github.com/ClubPanel/ClubPanel#readme",
   "private": false,
   "dependencies": {
     "@chakra-ui/react": "^1.6.3",
