@@ -7,6 +7,8 @@ declare const require;
 
 let imports: Record<string, any> = null;
 
+export const SharedData: Record<string, any> = {};
+
 export async function LoadModules(useCjs?: boolean) : Promise<Module[]> {
   if(imports === null && !useCjs) importAll(require.context("../../modules", true, /\.(tsx?|jsx?)$/));
 

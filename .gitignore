@@ -4,3 +4,4 @@ dist
 .next
 config
 modules
+yarn-error.log
