@@ -1,14 +1,19 @@
 const child_process = require("child_process");
-const fs = require("fs");
+const fs = require("fs-extra");
 const Path = require("path");
-const ncp = require("ncp").ncp;
-
-ncp.limit = 16;
 
 for (let module of fs.readdirSync("./modules")) {
-  child_process.exec("npm i", {cwd: Path.join("./modules", module)}, () => {});
+  const modulePath = Path.join("./modules", module);
+  const nodeModulesPath = Path.join(modulePath, "node_modules");
 
-  ncp(Path.join("./modules", module, "node_modules"), "node_modules");
+  fs.ensureDirSync(nodeModulesPath);
 
-  child_process.exec("tsc", {cwd: Path.join("./modules", module)}, () => {});
+  child_process.execSync("npm i", {cwd: modulePath});
+
+  fs.copySync(nodeModulesPath, "node_modules");
+
+  child_process.execSync("tsc", {cwd: modulePath});
+
+  fs.emptyDirSync(nodeModulesPath);
+  fs.rmdirSync(nodeModulesPath);
 }
