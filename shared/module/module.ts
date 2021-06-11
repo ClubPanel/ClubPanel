@@ -4,6 +4,7 @@ export interface Module {
   server?: ServerSide;
   client?: ClientSide;
   configs?: ConfigHandler;
+  priority?: number;
 }
 
 export interface ServerSide {

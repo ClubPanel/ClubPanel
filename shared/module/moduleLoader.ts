@@ -21,10 +21,14 @@ export async function LoadModules(useCjs?: boolean) : Promise<Module[]> {
 
     module.configs?.register();
 
+    if(isNaN(module.priority)) module.priority = 0;
+
     output.push(module);
   }
 
   ReloadConfigs();
+
+  output.sort((a, b) => b.priority-a.priority);
 
   return output;
 }
