@@ -1,5 +1,5 @@
 import { chakra } from "@chakra-ui/react";
-import React,  { Component } from "react";
+import React from "react";
 
 const MenuCategory = (props: { text: string }) : JSX.Element => {
   return (

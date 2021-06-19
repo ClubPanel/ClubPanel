@@ -23,6 +23,8 @@ export async function LoadModules(useCjs?: boolean) : Promise<Module[]> {
 
     if(isNaN(module.priority)) module.priority = 0;
 
+    module["path"] = path;
+
     output.push(module);
   }
 

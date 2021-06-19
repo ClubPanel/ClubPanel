@@ -8,7 +8,11 @@ const AutoIncrement = AutoIncrementFactory(mongoose);
 export interface IUser extends Document {
   username: string;
   id: number;
-  modules: object;
+  modules: Modules;
+}
+
+export interface Modules {
+  [key: string]: any;
 }
 
 const UserSchema = new Schema({

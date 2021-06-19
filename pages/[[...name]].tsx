@@ -1,12 +1,35 @@
 import Header from "../components/header";
 import React from "react";
+import { useAsync } from "react-async";
 import {GetConfig} from "../shared/config/configManager";
 import {propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfig} from "../shared/config/types/mainConfig";
+import * as Path from "path";
 
-const Page = ({ name }: {name: string}) => {
+declare const require;
+
+let imports: Record<string, any> = null;
+
+function importAll(r) {
+  imports = {};
+  r.keys().map(item => {
+    imports[item.replace("./", "")] = r(item);
+  });
+}
+
+const loadModule = (module, component) => {
+  importAll(require.context("../modules", true, /\.(tsx|jsx)$/));
+  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default() : null;
+};
+
+const Page = ({ name, component, module }: {name: string, component: string, module: string}) => {
+  const comp = loadModule(module, component);
+
   return (
-    <Header name={name}/>
+    <>
+      <Header name={name}/>
+      {comp}
+    </>
   );
 };
 

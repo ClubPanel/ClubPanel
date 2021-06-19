@@ -12,6 +12,7 @@ module.exports = {
       test: /\.md[x]?$/,
       use: "raw-loader"
     });
+
     return config;
   }
 }

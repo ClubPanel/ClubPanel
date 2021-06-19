@@ -19,4 +19,4 @@ export interface ConfigHandler {
   register: () => void;
 }
 
-export type ClientRegisterCallback = (path: string, props: object) => void;
+export type ClientRegisterCallback = (path: string, props: object, component?: string) => void;
