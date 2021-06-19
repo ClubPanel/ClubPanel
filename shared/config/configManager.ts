@@ -2,7 +2,6 @@ import {Config} from "./types/config";
 import {configs as configNames, RegisterConfig} from "./configFilesManager";
 import * as fs from "fs";
 import * as Path from "path";
-import {object} from "prop-types";
 
 let configs: Record<string, Config> = {};
 
@@ -14,22 +13,37 @@ export const ReloadConfigs = () => {
   for (let configName of configNames) {
     const path = Path.join("./config", configName.name);
 
-    if(!fs.existsSync(path)) {
-      fs.writeFileSync(path, JSON.stringify(JSON.parse(configName.default), null, 4));
+    if(!configName.isText) {
+      if (!fs.existsSync(path)) {
+        fs.writeFileSync(path, JSON.stringify(JSON.parse(configName.default), null, 4));
+      }
+
+      let parsed: object;
+      try {
+        parsed = JSON.parse(fs.readFileSync(path, "utf-8"));
+      } catch (e) {
+        throw new Error("Error loading " + configName.name + ": " + e.message);
+      }
+
+      const defaultConfig = JSON.parse(configName.default);
+
+      validateConfig(path, parsed, defaultConfig);
+
+      configs[Path.basename(configName.name)] = parsed;
+    } else {
+      if (!fs.existsSync(path)) {
+        fs.writeFileSync(path, configName.default);
+      }
+
+      let value: string;
+      try {
+        value = fs.readFileSync(path, "utf-8");
+      } catch (e) {
+        throw new Error("Error loading " + configName.name + ": " + e.message);
+      }
+
+      configs[Path.basename(configName.name)] = value;
     }
-
-    let parsed: object;
-    try {
-      parsed = JSON.parse(fs.readFileSync(path, "utf-8"));
-    } catch(e){
-      throw new Error("Error loading " + configName.name + ": " + e.message);
-    }
-
-    const defaultConfig = JSON.parse(configName.default);
-
-    validateConfig(path, parsed, defaultConfig);
-
-    configs[Path.basename(configName.name, ".json")] = parsed;
   }
 }
 

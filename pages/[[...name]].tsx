@@ -11,7 +11,7 @@ const Page = ({ name }: {name: string}) => {
 };
 
 const defaultProps = {
-  name: GetConfig<MainConfig>("main").name
+  name: GetConfig<MainConfig>("main.json").name
 };
 
 export const getStaticProps = async ({params}) => {

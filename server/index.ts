@@ -13,7 +13,7 @@ app.prepare()
   .then(async () => {
     const server = express();
 
-    const config = GetConfig<MainConfig>("main");
+    const config = GetConfig<MainConfig>("main.json");
 
     await database.Setup();
 
