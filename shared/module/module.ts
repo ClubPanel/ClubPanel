@@ -13,6 +13,7 @@ export interface ServerSide {
 
 export interface ClientSide {
   register?: (callback: ClientRegisterCallback) => void;
+  configs?: string[];
 }
 
 export interface ConfigHandler {

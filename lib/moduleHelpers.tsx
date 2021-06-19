@@ -23,7 +23,7 @@ export const SetupModules = async () => {
       const newProps = props as ClientProps & {module: string; component: string, config: Record<string, Config>};
       newProps.component = component || null;
       newProps.module = module["path"];
-      newProps.config = configs;
+      newProps.config = module.client.configs ? Object.fromEntries(Object.entries(configs).filter(entry => module.client.configs.includes(entry[0]))) : {};
 
       propsMap[path.split("/").filter(Boolean).join("/")] = newProps;
     });
