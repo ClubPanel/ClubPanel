@@ -1,4 +1,4 @@
-import {GetConfig} from "../../shared/config/configManager";
+import {GetConfig} from "../../shared/config/configStore";
 import {MainConfig} from "../../shared/config/types/mainConfig";
 import mongoose from "mongoose";
 

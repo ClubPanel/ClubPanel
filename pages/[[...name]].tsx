@@ -1,10 +1,10 @@
 import Header from "../components/header";
 import React from "react";
-import { useAsync } from "react-async";
-import {GetConfig} from "../shared/config/configManager";
+import {GetConfig} from "../shared/config/configStore";
 import {propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfig} from "../shared/config/types/mainConfig";
 import * as Path from "path";
+import {Config} from "../shared/config/types/config";
 
 declare const require;
 
@@ -17,13 +17,13 @@ function importAll(r) {
   });
 }
 
-const loadModule = (module, component) => {
+const loadModule = (module, component, config) => {
   importAll(require.context("../modules", true, /\.(tsx|jsx)$/));
-  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default() : null;
+  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config}) : null;
 };
 
-const Page = ({ name, component, module }: {name: string, component: string, module: string}) => {
-  const comp = loadModule(module, component);
+const Page = ({ name, component, module, config }: {name: string, component: string, module: string, config: Record<string, Config>}) => {
+  const comp = loadModule(module, component, config);
 
   return (
     <>

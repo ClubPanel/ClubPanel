@@ -1,9 +1,7 @@
-import {Config} from "./types/config";
 import {configs as configNames, RegisterConfig} from "./configFilesManager";
 import * as fs from "fs";
 import * as Path from "path";
-
-let configs: Record<string, Config> = {};
+import {configs} from "./configStore";
 
 RegisterConfig({name: "main.json", default: fs.readFileSync(Path.join("./shared/config/configs", "main.json"), "utf-8")});
 
@@ -69,10 +67,6 @@ const validateConfig = (path: string, config: object, defaultConfig: object) => 
   if(flag){
     fs.writeFileSync(path, JSON.stringify(config, null, 4));
   }
-}
-
-export function GetConfig<T>(config: string) : T {
-  return configs[config] as T;
 }
 
 ReloadConfigs();

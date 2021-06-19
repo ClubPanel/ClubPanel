@@ -2,7 +2,7 @@ import express from "express";
 import next from "next";
 import {LoadModules} from "../shared/module/moduleLoader";
 import * as database from "./database/database";
-import {GetConfig} from "../shared/config/configManager";
+import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfig} from "../shared/config/types/mainConfig";
 
