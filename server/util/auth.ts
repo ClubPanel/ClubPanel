@@ -1,5 +1,11 @@
 import express from "express";
 
+declare module "express-session" {
+  export interface SessionData {
+    lastURL?: string;
+  }
+}
+
 const authReqs: {req: AuthReq, priority: number}[] = [];
 
 export const registerAuthReq = (callback: AuthReq, priority = 0) => {
@@ -10,10 +16,14 @@ export const registerAuthReq = (callback: AuthReq, priority = 0) => {
 
 export type AuthReq = (req: express.Request, res: express.Response) => boolean;
 
-export const requireAuth = (req: express.Request, res: express.Response, next: express.NextFunction) => {
-  for (const authReq of authReqs) {
-    if(authReq.req(req, res)) return;
-  }
+export const requireAuth = () => {
+  return (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    if(req.session) req.session.lastURL = req.url;
 
-  next();
+    for (const authReq of authReqs) {
+      if(authReq.req(req, res)) return;
+    }
+
+    next();
+  };
 };

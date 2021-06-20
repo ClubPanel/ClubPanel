@@ -1,4 +1,5 @@
 import {Express} from "express";
+import {SessionData} from "express-session";
 
 export interface Module {
   server?: ServerSide;
@@ -9,11 +10,21 @@ export interface Module {
 
 export interface ServerSide {
   register?: (express: Express) => void;
+  events?: ServerSideEvents;
+}
+
+export interface ServerSideEvents {
+  getUserInfo?: (session: SessionData) => Record<string, any>;
 }
 
 export interface ClientSide {
   register?: (callback: ClientRegisterCallback) => void;
   configs?: string[];
+  events?: ClientSideEvents;
+}
+
+export interface ClientSideEvents {
+
 }
 
 export interface ConfigHandler {

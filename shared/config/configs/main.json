@@ -1,6 +1,8 @@
 {
     "__comment__name": "The below is the name that will be shown on the website.",
     "name": "ClubPanel",
+    "__comment__domain": "The below is the domain name of the URL to the panel",
+    "domain": "example.com",
     "__comment__db": "The below options are for connecting to a MongoDB server.",
     "dbURL": "DATABASE URL HERE",
     "cookie": {
