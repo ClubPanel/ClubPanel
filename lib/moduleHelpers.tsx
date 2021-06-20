@@ -8,6 +8,7 @@ export const propsMap: Record<string, ClientProps & {module: string; component: 
 export let modules: Module[] = null;
 
 export interface ClientProps {
+  siteName: string;
   name: string;
 }
 

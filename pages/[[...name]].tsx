@@ -5,6 +5,7 @@ import {propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfig} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
+import {Box} from "@chakra-ui/layout";
 
 declare const require;
 
@@ -22,19 +23,23 @@ const loadModule = (module, component, config) => {
   return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config}) : null;
 };
 
-const Page = ({ name, component, module, config }: {name: string, component: string, module: string, config: Record<string, Config>}) => {
+const Page = ({ siteName, name, component, module, config }: {siteName: string; name: string, component: string, module: string, config: Record<string, Config>}) => {
   const comp = loadModule(module, component, config);
 
   return (
     <>
-      <Header name={name}/>
-      {comp}
+      <Header name={siteName}/>
+      <Box
+        height="calc(100% - 72px)"
+      >
+        {comp}
+      </Box>
     </>
   );
 };
 
 const defaultProps = {
-  name: GetConfig<MainConfig>("main.json").name
+  siteName: GetConfig<MainConfig>("main.json").name
 };
 
 export const getStaticProps = async ({params}) => {
