@@ -24,7 +24,7 @@
   "homepage": "https://github.com/ClubPanel/ClubPanel#readme",
   "private": false,
   "dependencies": {
-    "@chakra-ui/react": "^1.6.3",
+    "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
     "express": "^4.17.1",
