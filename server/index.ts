@@ -6,7 +6,7 @@ import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {RequireBaseReferrer} from "./util/referrer";
-import {Module} from "../shared/module/module";
+import {Module, ServerSide} from "../shared/module/module";
 import {IUser} from "./database/models/user";
 
 declare module "express-session" {
@@ -23,14 +23,14 @@ app.prepare().then(async () => {
 
   await database.Setup();
 
-  const modules = await LoadModules(true);
+  const modules = await LoadModules<ServerSide>("server", true);
 
   registerRoutes(server, modules);
 
   for (const module of modules) {
-    if(!module.server?.register) continue;
+    if(!module?.register) continue;
 
-    module.server.register(server);
+    module.register(server);
   }
 
   server.get("*", (req, res) => {
@@ -45,7 +45,7 @@ app.prepare().then(async () => {
   process.exit(1);
 });
 
-const registerRoutes = (server: express.Express, modules: Module[]) => {
+const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
   const config = GetConfig<MainConfigServer>("server/main.json");
 
   server.use(session(config.cookie));
@@ -69,9 +69,9 @@ const registerRoutes = (server: express.Express, modules: Module[]) => {
     }
 
     for (const module of modules) {
-      if(!module.server?.events?.getUserInfo) continue;
+      if(!module?.events?.getUserInfo) continue;
 
-      const data = module.server.events.getUserInfo(req.session) || {};
+      const data = module.events.getUserInfo(req.session) || {};
       const keys = Object.keys(data);
 
       for (const key of keys) {

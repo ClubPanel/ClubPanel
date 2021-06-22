@@ -14,12 +14,14 @@ let imports: Record<string, any> = null;
 function importAll(r) {
   imports = {};
   r.keys().map(item => {
+    console.log(item);
+
     imports[item.replace("./", "")] = r(item);
   });
 }
 
 const loadModule = (module, component, config) => {
-  importAll(require.context("../modules", true, /\.(tsx|jsx)$/));
+  importAll(require.context("../modules", true, /^.+?\/(?:config|client).+?\.(tsx|jsx)$/));
   return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config}) : null;
 };
 
