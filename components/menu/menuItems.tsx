@@ -11,22 +11,16 @@ export interface IMenuLink {
 const MenuItems = ({ sidebar } : { sidebar: Record<string, IMenuLink[]> }) : JSX.Element => {
   const list: JSX.Element[] = [];
 
-  console.log("creating navbar");
-
-  console.log(sidebar, Object.keys(sidebar));
-
   for (const key of Object.keys(sidebar)) {
-    console.log("key", key);
 
-    list.push(<MenuCategory text={key} />);
+    list.push(<MenuCategory key={key} text={key} />);
 
-    for(const link of sidebar[key]){
-      console.log("link", link);
-      list.push(<MenuLink text={link.text} url={link.url} aria={link.aria} />);
+    for (let i = 0; i < sidebar[key].length; i++){
+      const link = sidebar[key][i];
+
+      list.push(<MenuLink key={key + "-" + i} text={link.text} url={link.url} aria={link.aria} />);
     }
   }
-
-  console.log("done");
 
   return (
     <>

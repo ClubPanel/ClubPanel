@@ -1,17 +1,9 @@
-import { Link, MenuItem } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/react";
 import React from "react";
 import MenuCategory from "./menuCategory";
+import MenuItem from "./menuItem";
 
-const MenuLink = (props: Record<string, any> & { text: string, url: string, aria: string, category?: boolean, isExternal?: boolean }) : JSX.Element => {
-  props.category ||= false;
-  props.isExternal ||= false;
-
-  console.log("build 1");
-
-  const { text, url, aria, category, ...rest } = props;
-
-  console.log("build 2");
-
+const MenuLink = ({ text, url, aria, category, ...rest }: Record<string, any> & { text: string, url: string, aria: string, category?: boolean, isExternal?: boolean }) : JSX.Element => {
   return (
     <Link
       href={url}

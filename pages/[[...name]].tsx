@@ -14,7 +14,6 @@ let imports: Record<string, any> = null;
 function importAll(r) {
   imports = {};
   r.keys().map(item => {
-    console.log(item);
 
     imports[item.replace("./", "")] = r(item);
   });
