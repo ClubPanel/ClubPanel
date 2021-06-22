@@ -46,7 +46,7 @@ app.prepare().then(async () => {
 });
 
 const registerRoutes = (server: express.Express, modules: Module[]) => {
-  const config = GetConfig<MainConfig>("main.json");
+  const config = GetConfig<MainConfig>("server/main.json");
 
   server.use(session(config.cookie));
 

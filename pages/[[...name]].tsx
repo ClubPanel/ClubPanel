@@ -6,6 +6,7 @@ import {MainConfig} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
 import {Box} from "@chakra-ui/layout";
+import {ReloadConfigs} from "../shared/config/configManager";
 
 declare const require;
 
@@ -39,7 +40,7 @@ const Page = ({ siteName, name, component, module, config }: {siteName: string; 
 };
 
 const defaultProps = {
-  siteName: GetConfig<MainConfig>("main.json").name
+  siteName: GetConfig<MainConfig>("client/main.json").name
 };
 
 export const getStaticProps = async ({params}) => {

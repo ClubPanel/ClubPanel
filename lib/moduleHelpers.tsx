@@ -24,7 +24,15 @@ export const SetupModules = async () => {
       const newProps = props as ClientProps & {module: string; component: string, config: Record<string, Config>};
       newProps.component = component || null;
       newProps.module = module["path"];
-      newProps.config = module.client.configs ? Object.fromEntries(Object.entries(configs).filter(entry => module.client.configs.includes(entry[0]))) : {};
+
+      const clientConfigs = module.client.configs ? Object.fromEntries(Object.entries(configs).filter(entry => module.client.configs.includes(entry[0]))) : {};
+      const serverConfigsInClientConfigs = Object.keys(clientConfigs).filter(key => key.replace(/^\.\// /* ./abc -> abc */, "").startsWith("server/"));
+
+      if(serverConfigsInClientConfigs.length > 0) {
+        throw new Error("A module is attempting to access server configs on the client. Module: \"" + newProps.module + "\", configs: \"" + serverConfigsInClientConfigs.join(", ") + "\".");
+      }
+
+      newProps.config = clientConfigs;
 
       propsMap[path.split("/").filter(Boolean).join("/")] = newProps;
     });

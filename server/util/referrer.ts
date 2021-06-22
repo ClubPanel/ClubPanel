@@ -4,7 +4,7 @@ import {MainConfig} from "../../shared/config/types/mainConfig";
 
 export const RequireBaseReferrer = () => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const configs = GetConfig<MainConfig>("main.json");
+    const configs = GetConfig<MainConfig>("client/main.json");
 
     if(!req.header("Referrer") || new URL(req.header("Referrer")).hostname !== configs.domain) {
       res.status(403);

@@ -2,14 +2,21 @@ import {configs as configNames, RegisterConfig} from "./configFilesManager";
 import * as fs from "fs";
 import * as Path from "path";
 import {configs} from "./configStore";
+import {mainClient, mainServer} from "./configs/configs";
 
-RegisterConfig({name: "main.json", default: fs.readFileSync(Path.join("./shared/config/configs", "main.json"), "utf-8")});
+RegisterConfig({name: "server/main.json", default: JSON.stringify(mainServer, null, 4)});
+RegisterConfig({name: "client/main.json", default: JSON.stringify(mainClient, null, 4)});
 
 export const ReloadConfigs = () => {
   if(!fs.existsSync("./config")) fs.mkdirSync("./config");
 
   for (let configName of configNames) {
     const path = Path.join("./config", configName.name);
+    const folderPath = Path.dirname(path);
+
+    if(!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath);
+    }
 
     if(!configName.isText) {
       if (!fs.existsSync(path)) {
@@ -27,7 +34,7 @@ export const ReloadConfigs = () => {
 
       validateConfig(path, parsed, defaultConfig);
 
-      configs[Path.basename(configName.name)] = parsed;
+      configs[configName.name.replace(/^\.\//, "") /* ./abc -> abc */] = parsed;
     } else {
       if (!fs.existsSync(path)) {
         fs.writeFileSync(path, configName.default);
@@ -40,7 +47,7 @@ export const ReloadConfigs = () => {
         throw new Error("Error loading " + configName.name + ": " + e.message);
       }
 
-      configs[Path.basename(configName.name)] = value;
+      configs[configName.name.replace(/^\.\//, "") /* ./abc -> abc */] = value;
     }
   }
 }
