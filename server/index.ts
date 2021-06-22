@@ -4,7 +4,7 @@ import {LoadModules} from "../shared/module/moduleLoader";
 import * as database from "./database/database";
 import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
-import {MainConfig} from "../shared/config/types/mainConfig";
+import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {RequireBaseReferrer} from "./util/referrer";
 import {Module} from "../shared/module/module";
 import {IUser} from "./database/models/user";
@@ -46,7 +46,7 @@ app.prepare().then(async () => {
 });
 
 const registerRoutes = (server: express.Express, modules: Module[]) => {
-  const config = GetConfig<MainConfig>("server/main.json");
+  const config = GetConfig<MainConfigServer>("server/main.json");
 
   server.use(session(config.cookie));
 

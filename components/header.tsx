@@ -5,8 +5,7 @@ import React, { Component } from "react";
 import {FaMoon, FaSun, FaBars, FaTimes} from "react-icons/fa";
 import { RemoveScroll } from "react-remove-scroll";
 import Logo from "./logo";
-import MenuItems from "./menu/menuItems";
-import MenuLink from "./menu/menuLink";
+import MenuItems, {IMenuLink} from "./menu/menuItems";
 
 const GithubIcon = (props: React.ComponentProps<"svg">) => (
   <svg viewBox="0 0 21 21" width="20" height="20" {...props}>
@@ -17,7 +16,7 @@ const GithubIcon = (props: React.ComponentProps<"svg">) => (
   </svg>
 );
 
-const HeaderContent = ({ name }: { name: string }) => {
+const HeaderContent = ({ name, sidebar }: { name: string, sidebar: Record<string, IMenuLink[]> }) => {
   const mobileNav = useDisclosure();
 
   const mobileNavBtnRef = React.useRef<HTMLButtonElement>();
@@ -74,7 +73,7 @@ const HeaderContent = ({ name }: { name: string }) => {
         />
       </HStack>
 
-      <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} name={name} />
+      <MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} name={name} sidebar={sidebar} />
     </>
   );
 };
@@ -84,7 +83,7 @@ interface MobileNavContentProps {
     onClose?: () => void;
 }
 
-export function MobileNavContent(props: MobileNavContentProps & { name: string }) : JSX.Element {
+export function MobileNavContent(props: MobileNavContentProps & { name: string, sidebar: Record<string, IMenuLink[]> }) : JSX.Element {
   const { isOpen, onClose } = props;
   const closeBtnRef = React.useRef<HTMLButtonElement>();
 
@@ -152,7 +151,7 @@ export function MobileNavContent(props: MobileNavContentProps & { name: string }
                   setShadow(scrolled ? "md" : undefined);
                 }}
               >
-                <MenuItems/>
+                <MenuItems sidebar={props.sidebar}/>
               </ScrollView>
             </Flex>
           </motion.div>
@@ -188,7 +187,7 @@ const ScrollView = (props: BoxProps & { onScroll?: any }) => {
   );
 };
 
-const Header = ({ name }: { name: string }) : JSX.Element => {
+const Header = ({ name, sidebar }: { name: string, sidebar: Record<string, IMenuLink[]> }) : JSX.Element => {
   const [_, setY] = React.useState(0);
   const ref = React.useRef<HTMLHeadingElement>();
 
@@ -212,7 +211,7 @@ const Header = ({ name }: { name: string }) : JSX.Element => {
       width="full"
     >
       <chakra.div height="4.5rem" mx="auto" maxW="8xl">
-        <HeaderContent name={name}/>
+        <HeaderContent name={name} sidebar={sidebar}/>
       </chakra.div>
     </chakra.header>
   );

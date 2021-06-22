@@ -16,5 +16,15 @@ export const mainClient = {
   __comment__name: "The below is the name that will be shown on the website.",
   name: "ClubPanel",
   __comment__domain: "The below is the domain name of the URL to the panel",
-  domain: "example.com"
+  domain: "example.com",
+  __comment_sidebar: "The below configured the sidebar that appears on the hamburger from the header.",
+  sidebar: {
+    "Example Category": [
+      {
+        text: "Example Link",
+        url: "/example",
+        aria: "Example"
+      }
+    ]
+  }
 };

@@ -11,7 +11,7 @@
     "build": "npm run build:modules && npm run build:server && npm run build:config && npm run build:client",
     "start": "node ./dist/server/index.js",
     "buildstart": "npm run build && npm run start",
-    "dev": "npm run build:modules && npm run build:server & node ./dist/server/index.js dev"
+    "dev": "npm run build:modules && npm run build:server && npm run build:config && node ./dist/server/index.js dev"
   },
   "repository": {
     "type": "git",

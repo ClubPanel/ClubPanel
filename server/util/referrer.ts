@@ -1,10 +1,10 @@
 import express from "express";
 import {GetConfig} from "../../shared/config/configStore";
-import {MainConfig} from "../../shared/config/types/mainConfig";
+import {MainConfigClient} from "../../shared/config/types/mainConfig";
 
 export const RequireBaseReferrer = () => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
-    const configs = GetConfig<MainConfig>("client/main.json");
+    const configs = GetConfig<MainConfigClient>("client/main.json");
 
     if(!req.header("Referrer") || new URL(req.header("Referrer")).hostname !== configs.domain) {
       res.status(403);

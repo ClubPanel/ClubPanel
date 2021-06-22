@@ -28,14 +28,21 @@
   },
   "compileOnSave": true,
   "include": [
-    "**/*.ts",
-    "**/*.tsx"
+    "components",
+    "js",
+    "lib",
+    "pages",
+    "styles",
+    "shared"
   ],
   "exclude": [
     "node_modules",
     ".idea",
     ".env",
     ".next",
+    "modules",
+    "dist",
+    "config",
     "server"
   ]
 }

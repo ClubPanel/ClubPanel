@@ -2,11 +2,10 @@ import Header from "../components/header";
 import React from "react";
 import {GetConfig} from "../shared/config/configStore";
 import {propsMap, SetupModules} from "../lib/moduleHelpers";
-import {MainConfig} from "../shared/config/types/mainConfig";
+import {MainConfigClient} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
 import {Box} from "@chakra-ui/layout";
-import {ReloadConfigs} from "../shared/config/configManager";
 
 declare const require;
 
@@ -24,12 +23,12 @@ const loadModule = (module, component, config) => {
   return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config}) : null;
 };
 
-const Page = ({ siteName, name, component, module, config }: {siteName: string; name: string, component: string, module: string, config: Record<string, Config>}) => {
+const Page = ({ mainConfig, name, component, module, config }: {mainConfig: MainConfigClient; name: string, component: string, module: string, config: Record<string, Config>}) => {
   const comp = loadModule(module, component, config);
 
   return (
     <>
-      <Header name={siteName}/>
+      <Header name={mainConfig.name} sidebar={mainConfig.sidebar}/>
       <Box
         height="calc(100% - 72px)"
       >
@@ -39,8 +38,10 @@ const Page = ({ siteName, name, component, module, config }: {siteName: string; 
   );
 };
 
+const mainConfig = GetConfig<MainConfigClient>("client/main.json");
+
 const defaultProps = {
-  siteName: GetConfig<MainConfig>("client/main.json").name
+  mainConfig
 };
 
 export const getStaticProps = async ({params}) => {

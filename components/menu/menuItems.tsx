@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React from "react";
 import MenuCategory from "./menuCategory";
 import MenuLink from "./menuLink";
 
@@ -8,26 +8,25 @@ export interface IMenuLink {
   aria: string;
 }
 
-const links: Record<string, IMenuLink[]> = {};
-
-export const RegisterMenuLink = (category: string, link?: IMenuLink) => {
-  if(!link && !links.hasOwnProperty(category)) {
-    links[category] = [];
-  }
-
-  if(link) links[category].push(link);
-};
-
-const MenuItems = () : JSX.Element => {
+const MenuItems = ({ sidebar } : { sidebar: Record<string, IMenuLink[]> }) : JSX.Element => {
   const list: JSX.Element[] = [];
 
-  for (const key of Object.keys(links)) {
+  console.log("creating navbar");
+
+  console.log(sidebar, Object.keys(sidebar));
+
+  for (const key of Object.keys(sidebar)) {
+    console.log("key", key);
+
     list.push(<MenuCategory text={key} />);
 
-    for(const link of links[key]){
-      list.push(<MenuLink text={link.text} url={link.url}  aria={link.aria}/>);
+    for(const link of sidebar[key]){
+      console.log("link", link);
+      list.push(<MenuLink text={link.text} url={link.url} aria={link.aria} />);
     }
   }
+
+  console.log("done");
 
   return (
     <>
