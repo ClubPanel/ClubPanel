@@ -7,7 +7,7 @@
     "build:server": "tsc --project tsconfig.server.json",
     "build:client": "npx next build",
     "build:modules": "node build-modules.js",
-    "build:config": "node createConfigs.js",
+    "build:config": "node create-configs.js",
     "build": "npm run build:modules && npm run build:server && npm run build:config && npm run build:client",
     "start": "node ./dist/server/index.js",
     "buildstart": "npm run build && npm run start",
