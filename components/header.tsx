@@ -1,8 +1,8 @@
 import { Box } from "@chakra-ui/layout";
-import { useBreakpointValue, Button, Collapse, Flex, IconButton, Stack, Text, useDisclosure, Link, Icon, chakra, useUpdateEffect, BoxProps, HStack } from "@chakra-ui/react";
+import { useBreakpointValue, Flex, IconButton, useDisclosure, Link, Icon, chakra, useUpdateEffect, BoxProps, HStack } from "@chakra-ui/react";
 import { AnimatePresence, motion, useElementScroll, useViewportScroll } from "framer-motion";
-import React, { Component } from "react";
-import {FaMoon, FaSun, FaBars, FaTimes} from "react-icons/fa";
+import React from "react";
+import {FaBars, FaTimes} from "react-icons/fa";
 import { RemoveScroll } from "react-remove-scroll";
 import Logo from "./logo";
 import MenuItems, {IMenuLink} from "./menu/menuItems";
@@ -107,8 +107,6 @@ export function MobileNavContent(props: MobileNavContentProps & { name: string, 
     }
   }, [isOpen]);
 
-  const [_, setShadow] = React.useState<string>();
-
   return (
     <AnimatePresence>
       {isOpen && (
@@ -146,11 +144,7 @@ export function MobileNavContent(props: MobileNavContentProps & { name: string, 
                 </Flex>
               </Box>
 
-              <ScrollView
-                onScroll={(scrolled) => {
-                  setShadow(scrolled ? "md" : undefined);
-                }}
-              >
+              <ScrollView>
                 <MenuItems sidebar={props.sidebar}/>
               </ScrollView>
             </Flex>
@@ -188,13 +182,7 @@ const ScrollView = (props: BoxProps & { onScroll?: any }) => {
 };
 
 const Header = ({ name, sidebar }: { name: string, sidebar: Record<string, IMenuLink[]> }) : JSX.Element => {
-  const [_, setY] = React.useState(0);
   const ref = React.useRef<HTMLHeadingElement>();
-
-  const {scrollY} = useViewportScroll();
-  React.useEffect(() => {
-    return scrollY.onChange(() => setY(scrollY.get()));
-  }, [scrollY]);
 
   return (
     <chakra.header

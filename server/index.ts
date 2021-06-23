@@ -6,7 +6,7 @@ import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {RequireBaseReferrer} from "./util/referrer";
-import {Module, ServerSide} from "../shared/module/module";
+import {ServerSide} from "../shared/module/module";
 import {IUser} from "./database/models/user";
 
 declare module "express-session" {
