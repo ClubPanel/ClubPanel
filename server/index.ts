@@ -8,6 +8,7 @@ import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {RequireBaseReferrer} from "./util/referrer";
 import {ServerSide} from "../shared/module/module";
 import {IUser} from "./database/models/user";
+import {ServerResponse} from "http";
 
 declare module "express-session" {
   export interface SessionData {
@@ -34,7 +35,7 @@ app.prepare().then(async () => {
   }
 
   server.get("*", (req, res) => {
-    return handle(req, res);
+    return handle(req, <ServerResponse>res);
   });
 
   server.listen(80, () => {
