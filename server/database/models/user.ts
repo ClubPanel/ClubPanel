@@ -15,6 +15,12 @@ export interface Modules {
   [key: string]: any;
 }
 
+export interface UserInfo {
+  username: string;
+  userId: number;
+  [key: string]: any;
+}
+
 const UserSchema = new Schema({
   username: { type: String, required: true },
   modules: { type: Schema.Types.Mixed, required: true }

@@ -18,9 +18,7 @@ export const SetupModules = async () => {
   modules = await LoadModules<ClientSide>("client", false);
 
   for (const module of modules) {
-    if(!module?.register) continue;
-
-    module.register((path: string, props: ClientProps, component?: string) => {
+    module?.register?.((path: string, props: ClientProps, component?: string) => {
       const newProps = props as ClientProps & {module: string; component: string, config: Record<string, Config>};
       newProps.component = component || null;
       newProps.module = module["path"];

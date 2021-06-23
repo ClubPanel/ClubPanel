@@ -5,9 +5,8 @@ import * as database from "./database/database";
 import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
-import {RequireBaseReferrer} from "./util/referrer";
 import {ServerSide} from "../shared/module/module";
-import {IUser} from "./database/models/user";
+import {IUser, UserInfo} from "./database/models/user";
 import {ServerResponse} from "http";
 
 declare module "express-session" {
@@ -29,12 +28,12 @@ app.prepare().then(async () => {
   registerRoutes(server, modules);
 
   for (const module of modules) {
-    if(!module?.register) continue;
-
-    module.register(server);
+    module?.register?.(server);
   }
 
   server.get("*", (req, res) => {
+    req["userInfo"] = getUserInfo(req, modules);
+
     return handle(req, <ServerResponse>res);
   });
 
@@ -50,37 +49,31 @@ const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
   const config = GetConfig<MainConfigServer>("server/main.json");
 
   server.use(session(config.cookie));
+};
 
-  server.get("/userinfo", RequireBaseReferrer(), (req, res) => {
-    const output = {
-      username: null,
-      userId: null
-    };
+const getUserInfo = (req: express.Request, modules: ServerSide[]) : UserInfo  => {
+  const output = {
+    username: null,
+    userId: null
+  };
 
-    if(!req.session) {
-      res.status(200);
-      res.send(output);
+  if(!req.session) {
+    return output;
+  }
 
-      return;
+  if(req.session.user) {
+    output.username = req.session.user.username;
+    output.userId = req.session.user.id;
+  }
+
+  for (const module of modules) {
+    const data = module?.events?.getUserInfo?.(req.session) || {};
+    const keys = Object.keys(data);
+
+    for (const key of keys) {
+      output[key] = keys[key];
     }
+  }
 
-    if(req.session.user) {
-      output.username = req.session.user.username;
-      output.userId = req.session.user.id;
-    }
-
-    for (const module of modules) {
-      if(!module?.events?.getUserInfo) continue;
-
-      const data = module.events.getUserInfo(req.session) || {};
-      const keys = Object.keys(data);
-
-      for (const key of keys) {
-        output[key] = keys[key];
-      }
-    }
-
-    res.status(200);
-    res.send(output);
-  });
+  return output;
 };
