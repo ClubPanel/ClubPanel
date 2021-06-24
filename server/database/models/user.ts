@@ -32,4 +32,16 @@ const UserSchema = new Schema({
 // @ts-ignore
 UserSchema.plugin(AutoIncrement, {inc_field: "id"});
 
-export default model<IUser>("User", UserSchema);
+const User = model<IUser>("User", UserSchema);
+
+export const getUsersCount = () : Promise<number> => {
+  return new Promise<number>((resolve, reject) => {
+    User.count((err, count) => {
+      if(err) return reject(err);
+
+      resolve(count);
+    });
+  });
+};
+
+export default User;
