@@ -13,7 +13,7 @@ export interface ClientProps {
 }
 
 export const SetupModules = async () => {
-  if(modules) return;
+  if(modules) return modules;
 
   modules = await LoadModules<ClientSide>("client", false);
 
@@ -35,4 +35,6 @@ export const SetupModules = async () => {
       propsMap[path.split("/").filter(Boolean).join("/")] = newProps;
     });
   }
+
+  return modules;
 };

@@ -1,12 +1,13 @@
 import Header from "../components/header";
 import React from "react";
 import {GetConfig} from "../shared/config/configStore";
-import {modules, propsMap, SetupModules} from "../lib/moduleHelpers";
+import {propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfigClient} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
 import {Box} from "@chakra-ui/layout";
 import {UserInfo} from "../server/database/models/user";
+import {ClientSide} from "../shared/module/module";
 
 declare const require;
 
@@ -32,6 +33,7 @@ export interface RenderProps {
   module: string;
   config: Record<string, Config>;
   userInfo: UserInfo;
+  location: string;
 }
 
 const Page = (props: RenderProps) => {
@@ -62,14 +64,18 @@ const defaultProps = {
 };
 
 let flag = false;
-const setup = SetupModules().then(() => {
+let modules: ClientSide[] = [];
+const setup = SetupModules().then(mods => {
   flag = true;
+  modules = mods || [];
 });
 
 export const getServerSideProps = async ({ params, req }) => {
   if(!flag && setup) await setup;
 
-  const props = propsMap[(params.name || []).join("/")];
+  const location = (params.name || []).join("/");
+
+  const props = propsMap[location];
   if(!props) return {
     notFound: true
   };
@@ -86,8 +92,10 @@ export const getServerSideProps = async ({ params, req }) => {
     props[key] = newDefault[key];
   }
 
+  props["location"] = location;
+
   const output = {
-    props
+    props: props as unknown as RenderProps
   };
 
   for (const module of modules) {

@@ -23,7 +23,7 @@ export interface ClientSide extends Module {
 }
 
 export interface ClientSideEvents {
-  preRender?: (props: { props: ClientProps & { module: string, component: string } }) => void;
+  preRender?: (props: { props: RenderProps }) => void;
   render?: (props: RenderProps) => void;
 }
 
