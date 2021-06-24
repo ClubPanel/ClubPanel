@@ -54,6 +54,7 @@ const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
 const getUserInfo = (req: express.Request, modules: ServerSide[]) : UserInfo  => {
   const output = {
     username: null,
+    permissions: [],
     userId: null
   };
 
@@ -63,6 +64,7 @@ const getUserInfo = (req: express.Request, modules: ServerSide[]) : UserInfo  =>
 
   if(req.session.user) {
     output.username = req.session.user.username;
+    output.permissions = req.session.user.permissions;
     output.userId = req.session.user.id;
   }
 
