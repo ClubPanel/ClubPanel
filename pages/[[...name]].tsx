@@ -1,7 +1,7 @@
 import Header from "../components/header";
 import React from "react";
 import {GetConfig} from "../shared/config/configStore";
-import {propsMap, SetupModules} from "../lib/moduleHelpers";
+import {modules, propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfigClient} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
@@ -25,8 +25,23 @@ const loadModule = (module, component, config, userInfo) => {
   return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo}) : null;
 };
 
-const Page = ({ mainConfig, name, component, module, config, userInfo }: {mainConfig: MainConfigClient; name: string, component: string, module: string, config: Record<string, Config>, userInfo: UserInfo }) => {
+export interface RenderProps {
+  mainConfig: MainConfigClient;
+  name: string;
+  component: string;
+  module: string;
+  config: Record<string, Config>;
+  userInfo: UserInfo;
+}
+
+const Page = (props: RenderProps) => {
+  const { mainConfig, name, component, module, config, userInfo } = props;
+
   const comp = loadModule(module, component, config, userInfo);
+
+  for (const module of modules) {
+    module?.events?.render?.(props);
+  }
 
   return (
     <>
@@ -71,9 +86,15 @@ export const getServerSideProps = async ({ params, req }) => {
     props[key] = newDefault[key];
   }
 
-  return {
+  const output = {
     props
   };
+
+  for (const module of modules) {
+    module?.events?.preRender?.(output);
+  }
+
+  return output;
 };
 
 export default Page;

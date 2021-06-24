@@ -1,5 +1,7 @@
 import {Express} from "express";
 import {SessionData} from "express-session";
+import {ClientProps} from "../../lib/moduleHelpers";
+import {RenderProps} from "../../pages/[[...name]]";
 
 export interface Module {
   priority?: number;
@@ -21,7 +23,8 @@ export interface ClientSide extends Module {
 }
 
 export interface ClientSideEvents {
-
+  preRender?: (props: { props: ClientProps & { module: string, component: string } }) => void;
+  render?: (props: RenderProps) => void;
 }
 
 export interface ConfigHandler {
