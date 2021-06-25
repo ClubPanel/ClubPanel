@@ -17,12 +17,23 @@ export async function LoadModules<T extends Module>(modulePath: string, useCjs?:
   const output: T[] = [];
 
   for (const path of fs.readdirSync("./modules")) {
-    const config: ConfigHandler = (useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, "config", "index.js"))) : imports[path + "/config/" + "index.ts"])?.default;
-    config?.register();
+    try {
+      (useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, "config", "index.js"))) : imports[path + "/config/" + "index.ts"])?.default?.register();
+    }
+    catch(e) {
+      if(!e?.message?.startsWith("Cannot find module")) throw e;
+    }
 
     if(!loadModule) continue;
 
-    const module: T = (useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, modulePath, "index.js"))) : imports[path + "/" + modulePath + "/" + "index.ts"])?.default;
+    let module: T = null;
+
+    try {
+      module = (useCjs ? await import(Path.resolve(Path.join("./dist/modules", path, modulePath, "index.js"))) : imports[path + "/" + modulePath + "/" + "index.ts"])?.default;
+    } catch(e) {
+      if(!e?.message?.startsWith("Cannot find module")) throw e;
+    }
+
     if(!module) continue;
 
     if(isNaN(module.priority)) module.priority = 0;

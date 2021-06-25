@@ -1,4 +1,4 @@
-import {ClientSide} from "../shared/module/module";
+import {ClientSide} from "../shared/module/moduleClient";
 import {LoadModules} from "../shared/module/moduleLoader";
 import {configs} from "../shared/config/configStore";
 import {Config} from "../shared/config/types/config";

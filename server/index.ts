@@ -5,7 +5,7 @@ import * as database from "./database/database";
 import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
-import {ServerSide} from "../shared/module/module";
+import {ServerSide} from "../shared/module/moduleServer";
 import {IUser, UserInfo} from "./database/models/user";
 import {ServerResponse} from "http";
 

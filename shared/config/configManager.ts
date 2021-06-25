@@ -4,8 +4,8 @@ import * as Path from "path";
 import {configs} from "./configStore";
 import {mainClient, mainServer} from "./configs/configs";
 
-RegisterConfig({name: "server/main.json", default: JSON.stringify(mainServer, null, 4)});
-RegisterConfig({name: "client/main.json", default: JSON.stringify(mainClient, null, 4)});
+RegisterConfig({name: "server/main.json", default: mainServer});
+RegisterConfig({name: "client/main.json", default: mainClient});
 
 export const ReloadConfigs = () => {
   if(!fs.existsSync("./config")) fs.mkdirSync("./config");
@@ -18,9 +18,9 @@ export const ReloadConfigs = () => {
       fs.mkdirSync(folderPath);
     }
 
-    if(!configName.isText) {
+    if(typeof(configName.default) === "object") {
       if (!fs.existsSync(path)) {
-        fs.writeFileSync(path, JSON.stringify(JSON.parse(configName.default), null, 4));
+        fs.writeFileSync(path, JSON.stringify(configName.default, null, 4));
       }
 
       let parsed: object;
@@ -30,9 +30,9 @@ export const ReloadConfigs = () => {
         throw new Error("Error loading " + configName.name + ": " + e.message);
       }
 
-      const defaultConfig = JSON.parse(configName.default);
+      const newConfig = Object.assign({}, configName.default);
 
-      validateConfig(path, parsed, defaultConfig);
+      validateConfig(path, parsed, newConfig);
 
       configs[configName.name.replace(/^\.\//, "") /* ./abc -> abc */] = parsed;
     } else {
@@ -52,28 +52,14 @@ export const ReloadConfigs = () => {
   }
 }
 
-const validateConfig = (path: string, config: object, defaultConfig: object) => {
-  let flag = false;
-
-  for (let key of Object.keys(defaultConfig)) {
-    if(!config.hasOwnProperty(key)) {
-      flag = true;
-
-      config[key] = defaultConfig[key];
+const validateConfig = (path: string, config: object, newConfig: object) => {
+  for (const key of Object.keys(config)) {
+    if(newConfig.hasOwnProperty(key)) {
+      newConfig[key] = config[key];
     }
   }
 
-  for(let key of Object.keys(config)) {
-    if(!defaultConfig.hasOwnProperty(key)) {
-      flag = true;
-
-      delete config[key];
-    }
-  }
-
-  if(flag){
-    fs.writeFileSync(path, JSON.stringify(config, null, 4));
-  }
+  fs.writeFileSync(path, JSON.stringify(newConfig, null, 4));
 }
 
 ReloadConfigs();

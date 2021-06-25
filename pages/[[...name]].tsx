@@ -7,7 +7,7 @@ import * as Path from "path";
 import {Config} from "../shared/config/types/config";
 import {Box} from "@chakra-ui/layout";
 import {UserInfo} from "../server/database/models/user";
-import {ClientSide} from "../shared/module/module";
+import {ClientSide} from "../shared/module/moduleClient";
 
 declare const require;
 
