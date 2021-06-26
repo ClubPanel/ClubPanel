@@ -31,8 +31,9 @@ app.prepare().then(async () => {
     module?.register?.(server);
   }
 
-  server.get("*", (req, res) => {
-    req["userInfo"] = getUserInfo(req, modules);
+  server.get("*", async (req, res) => {
+    req["userInfo"] = await getUserInfo(req, modules);
+    req["data"] = await getData(req, modules, req["userInfo"]);
 
     return handle(req, <ServerResponse>res);
   });
@@ -51,7 +52,7 @@ const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
   server.use(session(config.cookie));
 };
 
-const getUserInfo = (req: express.Request, modules: ServerSide[]) : UserInfo  => {
+const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promise<UserInfo> => {
   const output = {
     username: null,
     permissions: [],
@@ -69,7 +70,22 @@ const getUserInfo = (req: express.Request, modules: ServerSide[]) : UserInfo  =>
   }
 
   for (const module of modules) {
-    const data = module?.events?.getUserInfo?.(req.session) || {};
+    const data = await module?.events?.getUserInfo?.(req.session) || {};
+    const keys = Object.keys(data);
+
+    for (const key of keys) {
+      output[key] = keys[key];
+    }
+  }
+
+  return output;
+};
+
+const getData = async (req: express.Request, modules: ServerSide[], userInfo: UserInfo) : Promise<object> => {
+  const output = {};
+
+  for (const module of modules) {
+    const data = await module?.events?.getData?.(req.path, userInfo) || {};
     const keys = Object.keys(data);
 
     for (const key of keys) {

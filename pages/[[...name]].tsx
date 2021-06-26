@@ -21,9 +21,9 @@ function importAll(r) {
   });
 }
 
-const loadModule = (module, component, config, userInfo) => {
+const loadModule = (module, component, config, userInfo, data) => {
   importAll(require.context("../modules", true, /^.+?\/(?:config|client).+?\.(tsx|jsx)$/));
-  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo}) : null;
+  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo, data}) : null;
 };
 
 export interface RenderProps {
@@ -34,12 +34,13 @@ export interface RenderProps {
   config: Record<string, Config>;
   userInfo: UserInfo;
   location: string;
+  data: object;
 }
 
 const Page = (props: RenderProps) => {
-  const { mainConfig, name, component, module, config, userInfo } = props;
+  const { mainConfig, name, component, module, config, userInfo, data } = props;
 
-  const comp = loadModule(module, component, config, userInfo);
+  const comp = loadModule(module, component, config, userInfo, data);
 
   for (const module of modules) {
     module?.events?.render?.(props);
