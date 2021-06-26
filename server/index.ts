@@ -71,11 +71,8 @@ const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promis
 
   for (const module of modules) {
     const data = await module?.events?.getUserInfo?.(req.session) || {};
-    const keys = Object.keys(data);
 
-    for (const key of keys) {
-      output[key] = keys[key];
-    }
+    Object.assign(output, data);
   }
 
   return output;

@@ -54,7 +54,7 @@ export const ReloadConfigs = () => {
 
 const validateConfig = (path: string, config: object, newConfig: object) => {
   for (const key of Object.keys(config)) {
-    if(newConfig.hasOwnProperty(key)) {
+    if(newConfig.hasOwnProperty(key) && typeof(newConfig) === typeof(config)) {
       newConfig[key] = config[key];
     }
   }
