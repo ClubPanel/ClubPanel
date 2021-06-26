@@ -1,5 +1,12 @@
-export const hasPermission = (permissions: string[], permission: string) : boolean => {
+export const hasPermission = (permissions: string[], permission: string | string[]) : boolean => {
   if(!permission) return true;
   if(!permissions) return false;
-  return permissions.includes(permission);
+
+  if(typeof permission === "string") return permissions.includes(permission);
+
+  for (const item of permission) {
+    if(!permissions.includes(item)) return false;
+  }
+
+  return true;
 };
