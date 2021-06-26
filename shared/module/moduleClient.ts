@@ -2,15 +2,19 @@ import {RenderProps} from "../../pages/[[...name]]";
 import {Module} from "./module";
 
 export interface ClientSide extends Module {
-  register?: (callback: ClientRegisterCallback) => void;
+  register?: RegisterClientSideType;
   configs?: string[];
   events?: ClientSideEvents;
 }
 
+export type ClientRegisterCallback = (path: string, props: object, component?: string) => void;
+
+export type RegisterClientSideType = (callback: ClientRegisterCallback) => void;
+
 export interface ClientSideEvents {
-  preRender?: (props: { props: RenderProps }) => void;
-  render?: (props: RenderProps) => void;
+  preRender?: PreRenderType;
+  render?: RenderType;
 }
 
-
-export type ClientRegisterCallback = (path: string, props: object, component?: string) => void;
+export type PreRenderType = (props: { props: RenderProps }) => void;
+export type RenderType = (props: RenderProps) => void;
