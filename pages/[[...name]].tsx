@@ -1,7 +1,7 @@
 import Header from "../components/header";
 import React from "react";
 import {GetConfig} from "../shared/config/configStore";
-import {propsMap, SetupModules} from "../lib/moduleHelpers";
+import {clientConfigs, propsMap, SetupModules} from "../lib/moduleHelpers";
 import {MainConfigClient} from "../shared/config/types/mainConfig";
 import * as Path from "path";
 import {Config} from "../shared/config/types/config";
@@ -93,6 +93,7 @@ export const getServerSideProps = async ({ params, req }) => {
     props[key] = newDefault[key];
   }
 
+  props["config"] = clientConfigs;
   props["location"] = location;
 
   const output = {
