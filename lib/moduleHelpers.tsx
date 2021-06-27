@@ -25,7 +25,7 @@ export const SetupModules = async () => {
       newProps.component = component || null;
       newProps.module = module["path"];
 
-      propsMap[path.split("/").filter(Boolean).join("/")] = newProps;
+      propsMap["/" + path.split("/").filter(Boolean).join("/")] = newProps;
     });
   }
 

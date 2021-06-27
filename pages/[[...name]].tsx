@@ -74,7 +74,7 @@ const setup = SetupModules().then(mods => {
 export const getServerSideProps = async ({ params, req }) => {
   if(!flag && setup) await setup;
 
-  const location = (params.name || []).join("/");
+  const location = "/" + (params.name || []).join("/");
 
   const props = propsMap[location];
   if(!props) return {
