@@ -33,7 +33,7 @@ app.prepare().then(async () => {
 
   server.get("*", async (req, res) => {
     req["userInfo"] = await getUserInfo(req, modules);
-    req["data"] = await getData(req, modules, req["userInfo"]);
+    req["moduleData"] = await getData(req, modules, req["userInfo"]);
 
     return handle(req, <ServerResponse>res);
   });
@@ -83,11 +83,8 @@ const getData = async (req: express.Request, modules: ServerSide[], userInfo: Us
 
   for (const module of modules) {
     const data = await module?.events?.getData?.(req.path, userInfo) || {};
-    const keys = Object.keys(data);
 
-    for (const key of keys) {
-      output[key] = keys[key];
-    }
+    Object.assign(output, data);
   }
 
   return output;

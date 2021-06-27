@@ -81,20 +81,12 @@ export const getServerSideProps = async ({ params, req }) => {
     notFound: true
   };
 
-  const propsKeys = Object.keys(props);
-
-  const newDefault: typeof defaultProps & { userInfo: UserInfo } = Object.assign({
-    userInfo: req.userInfo
-  }, defaultProps);
-
-  for (const key of Object.keys(newDefault)) {
-    if(propsKeys.includes(key)) continue;
-
-    props[key] = newDefault[key];
-  }
+  Object.assign(props, defaultProps);
 
   props["config"] = clientConfigs;
   props["location"] = location;
+  props["userInfo"] = req.userInfo;
+  props["data"] = req.moduleData;
 
   const output = {
     props: props as unknown as RenderProps
