@@ -6,6 +6,7 @@ import mongoose from "mongoose";
 const AutoIncrement = AutoIncrementFactory(mongoose);
 
 export interface IUser extends Document {
+  email: string;
   username: string;
   id: number;
   permissions: string[];
@@ -17,6 +18,7 @@ export interface Modules {
 }
 
 export interface UserInfo {
+  email: string;
   username: string;
   userId: number;
   permissions: string[];
@@ -24,6 +26,7 @@ export interface UserInfo {
 }
 
 const UserSchema = new Schema({
+  email: { type: String, required: true },
   username: { type: String, required: true },
   permissions: [{ type: String, required: true, default: [] }],
   modules: { type: Schema.Types.Mixed, required: true }
