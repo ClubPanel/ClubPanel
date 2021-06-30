@@ -9,7 +9,7 @@ const MenuCategory = (props: { text: string }) : JSX.Element => {
       my="6%"
       textTransform="uppercase"
       letterSpacing="wider"
-      color="gray.700"
+      color="white"
     >
       {props.text}
     </chakra.h4>

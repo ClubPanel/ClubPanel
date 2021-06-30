@@ -54,6 +54,7 @@ const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
 
 const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promise<UserInfo> => {
   const output = {
+    email: null,
     username: null,
     permissions: [],
     userId: null
@@ -64,6 +65,7 @@ const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promis
   }
 
   if(req.session.user) {
+    output.email = req.session.user.email;
     output.username = req.session.user.username;
     output.permissions = req.session.user.permissions;
     output.userId = req.session.user.id;

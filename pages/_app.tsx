@@ -4,19 +4,7 @@ import React from "react";
 import "../styles/index.scss";
 
 import "../js/index";
-
-const theme = extendTheme({
-  styles: {
-    global: {
-      body: {
-        bg: "#222831",
-        color: "white"
-      }
-    }
-  },
-  initialColorMode: "dark",
-  useSystemColorMode: false
-});
+import {theme} from "../lib/theme";
 
 export const App = ({ Component, pageProps}: { Component: any, pageProps: any } ) : JSX.Element => {
   return (
