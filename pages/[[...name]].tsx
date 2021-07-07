@@ -8,6 +8,7 @@ import {Config} from "../shared/config/types/config";
 import {Box} from "@chakra-ui/layout";
 import {UserInfo} from "../server/database/models/user";
 import {ClientSide} from "../shared/module/moduleClient";
+import {getCSRF} from "../server/util/csrf";
 
 declare const require;
 
@@ -35,6 +36,7 @@ export interface RenderProps {
   userInfo: UserInfo;
   location: string;
   data: object;
+  csrf: string;
 }
 
 const Page = (props: RenderProps) => {
@@ -87,6 +89,7 @@ export const getServerSideProps = async ({ params, req }) => {
   props["location"] = location;
   props["userInfo"] = req.userInfo;
   props["data"] = req.moduleData;
+  props["csrf"] = getCSRF(req.session);
 
   const output = {
     props: props as unknown as RenderProps
