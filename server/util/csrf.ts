@@ -8,6 +8,9 @@ declare module "express-session" {
   }
 }
 
+/**
+ * An express middleware that requires the body of a request to contain the CSRF token. This should be used after a body parser middleware.
+ */
 export const requireCSRF = () => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
     if(req.body?.hasOwnProperty?.("csrf") && req.body?.csrf === getCSRF(req.session)) next();

@@ -1,4 +1,4 @@
-import {extendTheme, withDefaultProps} from "@chakra-ui/react";
+import {extendTheme, withDefaultColorScheme, withDefaultProps} from "@chakra-ui/react";
 
 export const theme = extendTheme({
   colors: {
@@ -26,12 +26,11 @@ export const theme = extendTheme({
     Drawer: {
       baseStyle: {
         dialog: {
-          bg: "dark.700",
-          color: "white"
+          bg: "dark.700"
         }
       }
     }
   },
   initialColorMode: "dark",
   useSystemColorMode: false
-});
+}, withDefaultColorScheme({colorScheme: "dark"}));

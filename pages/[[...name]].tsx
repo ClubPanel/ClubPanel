@@ -40,13 +40,13 @@ export interface RenderProps {
 }
 
 const Page = (props: RenderProps) => {
-  const { mainConfig, name, component, module, config, userInfo, data, csrf } = props;
-
-  const comp = loadModule(module, component, config, userInfo, data, csrf);
-
   for (const module of modules) {
     module?.events?.render?.(props);
   }
+
+  const { mainConfig, name, component, module, config, userInfo, data, csrf } = props;
+
+  const comp = loadModule(module, component, config, userInfo, data, csrf);
 
   return (
     <>

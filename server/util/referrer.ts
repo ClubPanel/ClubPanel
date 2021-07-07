@@ -2,6 +2,9 @@ import express from "express";
 import {GetConfig} from "../../shared/config/configStore";
 import {MainConfigClient} from "../../shared/config/types/mainConfig";
 
+/**
+ * An express middleware used to require the referrer of a request to be this site. Useful for preventing CSRF in conjunction with `requireCSRF`.
+ */
 export const requireBaseReferrer = () => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const configs = GetConfig<MainConfigClient>("client/main.json");
