@@ -25,6 +25,7 @@
   "homepage": "https://github.com/ClubPanel/ClubPanel#readme",
   "private": false,
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.13",
     "@chakra-ui/react": "^1.6.4",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
@@ -61,7 +62,7 @@
     "eslint-plugin-react": "^7.24.0",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.4",
-    "webpack": "^5.41.1",
+    "webpack": "^5.43.0",
     "webpack-cli": "^4.7.2",
     "webpack-manifest-plugin": "^3.1.1",
     "webpack-node-externals": "^3.0.0"
