@@ -2,7 +2,7 @@ import express from "express";
 import {GetConfig} from "../../shared/config/configStore";
 import {MainConfigClient} from "../../shared/config/types/mainConfig";
 
-export const RequireBaseReferrer = () => {
+export const requireBaseReferrer = () => {
   return (req: express.Request, res: express.Response, next: express.NextFunction) => {
     const configs = GetConfig<MainConfigClient>("client/main.json");
 
