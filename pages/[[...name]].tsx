@@ -27,15 +27,45 @@ const loadModule = (module, component, config, userInfo, data, csrf) => {
   return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo, data, csrf}) : null;
 };
 
+/**
+ * The props sent to the render function.
+ */
 export interface RenderProps {
+  /**
+   * The main client config.
+   */
   mainConfig: MainConfigClient;
+  /**
+   * The name of the ClubPanel, which will appear on the sidebar.
+   */
   name: string;
+  /**
+   * The path to the component, relative to the root of its module's directory.
+   */
   component: string;
+  /**
+   * The path of the module.
+   */
   module: string;
+  /**
+   * An object containing every client config.
+   */
   config: Record<string, Config>;
+  /**
+   * The user info of the user making the request.
+   */
   userInfo: UserInfo;
+  /**
+   * The path of the request in the browser.
+   */
   location: string;
+  /**
+   * The custom data from `getData`.
+   */
   data: object;
+  /**
+   * The CSRF token.
+   */
   csrf: string;
 }
 
