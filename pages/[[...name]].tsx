@@ -22,9 +22,9 @@ function importAll(r) {
   });
 }
 
-const loadModule = (module, component, config, userInfo, data) => {
+const loadModule = (module, component, config, userInfo, data, csrf) => {
   importAll(require.context("../modules", true, /^.+?\/(?:config|client).+?\.(tsx|jsx)$/));
-  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo, data}) : null;
+  return component ? imports[Path.join(module, component).replace(/\\/g, "/")].default({config, userInfo, data, csrf}) : null;
 };
 
 export interface RenderProps {
@@ -42,7 +42,7 @@ export interface RenderProps {
 const Page = (props: RenderProps) => {
   const { mainConfig, name, component, module, config, userInfo, data } = props;
 
-  const comp = loadModule(module, component, config, userInfo, data);
+  const comp = loadModule(module, component, config, userInfo, data, csrf);
 
   for (const module of modules) {
     module?.events?.render?.(props);
