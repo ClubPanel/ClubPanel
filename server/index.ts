@@ -6,7 +6,7 @@ import {GetConfig} from "../shared/config/configStore";
 import session from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {ServerSide} from "../shared/module/moduleServer";
-import {IUser, UserInfo} from "./database/models/user";
+import User, {IUser, UserInfo} from "./database/models/user";
 import {ServerResponse} from "http";
 
 declare module "express-session" {
@@ -23,9 +23,31 @@ app.prepare().then(async () => {
 
   await database.Setup();
 
-  const modules = await LoadModules<ServerSide>("server", true);
+  const config = GetConfig<MainConfigServer>("server/main.json");
 
-  registerRoutes(server, modules);
+  server.use(session(config.cookie));
+
+  //This is done to force a reload of everything every request. For example, if a person has permission removed,
+  //it will not be reflected until the next login without this.
+  server.use(async (req, res, next) => {
+    if(!req.session?.user) return next();
+
+    try {
+      req.session.user = await User.findOne({id: req.session.user.id});
+    } catch(e) {
+      console.error(e);
+      req.session.user = null;
+      req.session.destroy((e1) => {
+        if(e1) {
+          console.error(e1);
+        }
+      });
+    }
+
+    next();
+  });
+
+  const modules = await LoadModules<ServerSide>("server", true);
 
   for (const module of modules) {
     module?.register?.(server);
@@ -45,12 +67,6 @@ app.prepare().then(async () => {
   console.error(ex);
   process.exit(1);
 });
-
-const registerRoutes = (server: express.Express, modules: ServerSide[]) => {
-  const config = GetConfig<MainConfigServer>("server/main.json");
-
-  server.use(session(config.cookie));
-};
 
 const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promise<UserInfo> => {
   const output = {
