@@ -9,6 +9,7 @@ import {Box} from "@chakra-ui/layout";
 import {UserInfo} from "../server/database/models/user";
 import {ClientSide} from "../shared/module/moduleClient";
 import {getCSRF} from "../server/util/csrf";
+import {MatchURLPattern} from "../shared/util/url";
 
 declare const require;
 
@@ -67,6 +68,10 @@ export interface RenderProps {
    * The CSRF token.
    */
   csrf: string;
+  /**
+   * An object containing the parsed params of the request URL.
+   */
+  params: object;
 }
 
 const Page = (props: RenderProps) => {
@@ -108,7 +113,17 @@ export const getServerSideProps = async ({ params, req }) => {
 
   const location = "/" + (params.name || []).join("/");
 
-  const props = propsMap[location];
+  let props = null;
+
+  for (const key of Object.keys(propsMap)) {
+    const match = MatchURLPattern(location, key);
+
+    if(match) {
+      props = propsMap[key];
+      props["params"] = match;
+    }
+  }
+
   if(!props) return {
     notFound: true
   };
