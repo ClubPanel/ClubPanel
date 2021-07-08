@@ -100,7 +100,7 @@ const getData = async (req: express.Request, modules: ServerSide[], userInfo: Us
   const output = {};
 
   for (const module of modules) {
-    const data = await module?.events?.getData?.(req.path, userInfo) || {};
+    const data = await module?.events?.getData?.(req.path, userInfo, req.session) || {};
 
     Object.assign(output, data);
   }

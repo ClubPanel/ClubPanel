@@ -49,6 +49,7 @@ export type GetUserInfoType = (session: SessionData) => Partial<UserInfo> | Prom
  * Anything added here is available in the `moduleData` property in a page component.
  * @param path {string} - is the path that the request is being made from.
  * @param userInfo {UserInfo} - is the user info that will be sent to the client, containing information like a user's permissions.
+ * @param session {SessionData} - is the session data sent along with the request.
  * @returns {object | Promise<object>} An object whose properties will be added to the data sent to the client.
  */
-export type GetDataType = (path: string, userInfo: UserInfo) => object | Promise<object>;
+export type GetDataType = (path: string, userInfo: UserInfo, session: SessionData) => object | Promise<object>;
