@@ -2,6 +2,8 @@ const child_process = require("child_process");
 const fs = require("fs-extra");
 const Path = require("path");
 
+const imports = [];
+
 for (let module of fs.readdirSync("./modules")) {
   console.log("Building " + module);
 
@@ -28,4 +30,11 @@ for (let module of fs.readdirSync("./modules")) {
 
   fs.emptyDirSync(nodeModulesPath);
   fs.rmdirSync(nodeModulesPath);
+
+  const scssPath = Path.join(modulePath, "styles", "index.scss");
+  if(fs.existsSync(scssPath)) {
+    imports.push(`@import "${Path.join("../", scssPath).replace(/\\/g, "/")}";`);
+  }
 }
+
+fs.writeFileSync("./styles/moduleImports.scss", imports.join("\n"));
