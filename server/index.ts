@@ -50,7 +50,7 @@ app.prepare().then(async () => {
   const modules = await LoadModules<ServerSide>("server", true);
 
   for (const module of modules) {
-    module?.register?.(server);
+    module?.register?.(server, modules);
   }
 
   server.get("*", async (req, res) => {

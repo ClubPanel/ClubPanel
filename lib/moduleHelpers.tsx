@@ -26,7 +26,7 @@ export const SetupModules = async () => {
       newProps.module = module["path"];
 
       propsMap["/" + path.split("/").filter(Boolean).join("/")] = newProps;
-    });
+    }, modules);
   }
 
   //Get all configs that start with "client/" and are not main

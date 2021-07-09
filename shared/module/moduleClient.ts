@@ -17,18 +17,18 @@ export interface ClientSide extends Module {
 }
 
 /**
+ * The function that will be ran to register pages.
+ * @param callback {ClientRegisterCallback} - is a function that can be used to register a page.
+ */
+export type RegisterClientSideType = (callback: ClientRegisterCallback, modules: ClientSide[]) => void;
+
+/**
  * The callback function used to register a page.
  * @param path {string} - is the location of the page in the browser.
  * @param props {object} - is an object of props that will be passed to the page's render method.
  * @param component {string} - is an optional path to the component that defines everything on the page. This path is relative to the root of the module directory.
  */
 export type ClientRegisterCallback = (path: string, props: object, component?: string) => void;
-
-/**
- * The function that will be ran to register pages.
- * @param callback {ClientRegisterCallback} - is a function that can be used to register a page.
- */
-export type RegisterClientSideType = (callback: ClientRegisterCallback) => void;
 
 /**
  * An interface allowing modules to listen to client-events.
