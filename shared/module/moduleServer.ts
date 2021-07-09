@@ -20,6 +20,7 @@ export interface ServerSide extends Module {
 /**
  * A method called when routes can be added to the express server.
  * @param express {Express} - is the express server.
+ * @param modules {ServerSide[]} - is an array of every module that has been loaded.
  */
 export type RegisterServerSideType = (express: Express, modules: ServerSide[]) => void;
 

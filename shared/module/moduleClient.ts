@@ -19,6 +19,7 @@ export interface ClientSide extends Module {
 /**
  * The function that will be ran to register pages.
  * @param callback {ClientRegisterCallback} - is a function that can be used to register a page.
+ * @param modules {ClientSide[]} - is an array of every module that has been loaded.
  */
 export type RegisterClientSideType = (callback: ClientRegisterCallback, modules: ClientSide[]) => void;
 
