@@ -3,7 +3,7 @@
  */
 export interface ConfigInfo {
   /**
-   * The path of the config, relative to the configs directory. Configs for the server should be prefixed with `server/`, and configs
+   * The path of the config, relative to the config directory. Configs for the server should be prefixed with `server/`, and configs
    * for the client should be prefixed with `client/`. The server has access to all config files, but the client only has access to
    * config files in the client directory. Any sensitive data (such as secrets) should be placed inside of server configs.
    */
