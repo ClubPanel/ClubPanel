@@ -10,26 +10,23 @@ for (let module of fs.readdirSync("./modules")) {
   const modulePath = Path.join("./modules", module);
   const nodeModulesPath = Path.join(modulePath, "node_modules");
 
-  fs.ensureDirSync(nodeModulesPath);
+  if(process.argv[2] !== "dev") {
+    fs.ensureDirSync(nodeModulesPath);
 
-  try {
-    child_process.execSync("npm i", {cwd: modulePath});
-  }
-  catch(e){
-    throw new Error("Error in npm install (" + modulePath + "): \n" + e.stdout.toString("utf-8") + "\n" + e.stderr.toString("utf-8"));
-  }
+    try {
+      child_process.execSync("npm i", {cwd: modulePath});
+    } catch (e) {
+      throw new Error("Error in npm install (" + modulePath + "): \n" + e.stdout.toString("utf-8") + "\n" + e.stderr.toString("utf-8"));
+    }
 
-  fs.copySync(nodeModulesPath, "node_modules");
+    fs.copySync(nodeModulesPath, "node_modules");
+  }
 
   try {
     child_process.execSync("tsc", {cwd: modulePath});
-  }
-  catch(e){
+  } catch (e) {
     throw new Error("Error in typescript (" + modulePath + "): \n" + e.stdout.toString("utf-8") + "\n" + e.stderr.toString("utf-8"));
   }
-
-  fs.emptyDirSync(nodeModulesPath);
-  fs.rmdirSync(nodeModulesPath);
 
   const scssPath = Path.join(modulePath, "styles", "index.scss");
   if(fs.existsSync(scssPath)) {
