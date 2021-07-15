@@ -9,7 +9,6 @@ export interface ClientSide extends Module {
    * A method called when pages should be registered, providing a callback to register pages as an argument.
    */
   register?: RegisterClientSideType;
-  configs?: string[];
   /**
    * An interface allowing the module to register for events.
    */
