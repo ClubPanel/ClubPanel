@@ -20,6 +20,9 @@ for (let module of fs.readdirSync("./modules")) {
     }
 
     fs.copySync(nodeModulesPath, "node_modules");
+
+    fs.emptyDirSync(nodeModulesPath);
+    fs.rmdirSync(nodeModulesPath);
   }
 
   try {
