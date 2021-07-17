@@ -1,5 +1,6 @@
 import {UserInfo} from "../database/models/user";
 import {SessionData} from "express-session";
+import Path from "path";
 
 export const dataFunctions: Record<string, (userInfo: UserInfo, session: SessionData, params: object) => object | Promise<object>> = {};
 
@@ -12,4 +13,13 @@ export const dataFunctions: Record<string, (userInfo: UserInfo, session: Session
 export const RegisterDataPath = (path: string, func: (userInfo: UserInfo, session: SessionData, params: object) => object | Promise<object>) => {
   if(dataFunctions.hasOwnProperty(path)) throw new Error("Error: Data function path \"" + path + "\" registered twice!");
   dataFunctions[path] = func;
+};
+
+/**
+ * Joins multiple parts of a path together, for usage in the path argument of RegisterDataPath.
+ * @param parts {...string} - is the parts of the path that will be joined together.
+ * @returns {string} - The joined path.
+ */
+export const JoinPath = (...parts: string[]) : string => {
+  return Path.join(...parts).replace(/\\/g, "/");
 };
