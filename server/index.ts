@@ -3,11 +3,13 @@ import next from "next";
 import {LoadModules} from "../shared/module/moduleLoader";
 import * as database from "./database/database";
 import {GetConfig} from "../shared/config/configStore";
-import session from "express-session";
+import session, {SessionData} from "express-session";
 import {MainConfigServer} from "../shared/config/types/mainConfig";
 import {ServerSide} from "../shared/module/moduleServer";
 import User, {IUser, UserInfo} from "./database/models/user";
 import {ServerResponse} from "http";
+import {MatchURLPattern} from "../shared/util/url";
+import {dataFunctions} from "./util/getData";
 
 declare module "express-session" {
   export interface SessionData {
@@ -97,12 +99,26 @@ const getUserInfo = async (req: express.Request, modules: ServerSide[]) : Promis
 };
 
 const getData = async (req: express.Request, modules: ServerSide[], userInfo: UserInfo) : Promise<object> => {
-  const output = {};
+  const output = await getDataFromDataFunctions(req.path, userInfo, req.session);
 
   for (const module of modules) {
     const data = await module?.events?.getData?.(req.path, userInfo, req.session) || {};
 
     Object.assign(output, data);
+  }
+
+  return output;
+};
+
+const getDataFromDataFunctions = async (path: string, userInfo: UserInfo, session: SessionData) : Promise<object> => {
+  const output: object = {};
+
+  for (const key of Object.keys(dataFunctions)) {
+    const params = MatchURLPattern(path, key);
+    if(!params) continue;
+
+    Object.assign(output, await dataFunctions[key](userInfo, session, params));
+    break;
   }
 
   return output;
