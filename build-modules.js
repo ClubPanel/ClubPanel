@@ -4,6 +4,8 @@ const Path = require("path");
 
 const imports = [];
 
+fs.ensureDirSync("./modules");
+
 for (let module of fs.readdirSync("./modules")) {
   console.log("Building " + module);
 
