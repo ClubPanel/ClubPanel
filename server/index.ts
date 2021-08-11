@@ -10,6 +10,8 @@ import User, {IUser, UserInfo} from "./database/models/user";
 import {ServerResponse} from "http";
 import {MatchURLPattern} from "../shared/util/url";
 import {dataFunctions} from "./util/getData";
+import * as https from "https";
+import * as fs from "fs";
 
 declare module "express-session" {
   export interface SessionData {
@@ -62,9 +64,18 @@ app.prepare().then(async () => {
     return handle(req, <ServerResponse>res);
   });
 
-  server.listen(80, () => {
-    console.log("> Ready on http://localhost:80");
-  });
+  if(!config.enableSSL) {
+    server.listen(config.port, () => {
+      console.log("> Ready on http://localhost:" + config.port);
+    });
+  } else {
+    https.createServer({
+      key: fs.readFileSync(config.SSLKey),
+      cert: fs.readFileSync(config.SSLCert)
+    }, server).listen(config.port);
+
+    console.log("> Ready on http://localhost:" + config.port);
+  }
 }).catch((ex) => {
   console.error(ex);
   process.exit(1);
