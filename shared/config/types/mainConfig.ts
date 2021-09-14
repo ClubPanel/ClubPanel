@@ -11,4 +11,8 @@ export interface MainConfigClient extends Config {
 export interface MainConfigServer extends Config {
   dbURL: string;
   cookie: SessionOptions;
+  port: number;
+  enableSSL: boolean;
+  SSLKey: string;
+  SSLCert: string;
 }

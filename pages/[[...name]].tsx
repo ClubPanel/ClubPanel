@@ -37,7 +37,7 @@ export interface RenderProps {
    */
   mainConfig: MainConfigClient;
   /**
-   * The name of the ClubPanel, which will appear on the sidebar.
+   * The name/title of the page.
    */
   name: string;
   /**
@@ -85,6 +85,7 @@ const Page = (props: RenderProps) => {
 
   return (
     <>
+      {name ? <title>{name}</title> : null}
       <Header name={mainConfig.name} sidebar={mainConfig.sidebar}/>
       <Box
         height="calc(100% - 72px)"

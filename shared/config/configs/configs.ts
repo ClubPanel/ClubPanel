@@ -9,7 +9,11 @@ export const mainServer = {
     cookie: {
       "secure": false
     }
-  }
+  },
+  port: 80,
+  enableSSL: false,
+  SSLKey: "",
+  SSLCert: ""
 };
 
 export const mainClient = {
