@@ -5,7 +5,8 @@ import React from "react";
 import {FaBars, FaTimes} from "react-icons/fa";
 import { RemoveScroll } from "react-remove-scroll";
 import Logo from "./logo";
-import MenuItems, {IMenuLink} from "./menu/menuItems";
+import MenuItems from "./menu/menuItems";
+import {IMenuLink} from "./menu/IMenuLink";
 
 const GithubIcon = (props: React.ComponentProps<"svg">) => (
   <svg viewBox="0 0 21 21" width="20" height="20" {...props}>

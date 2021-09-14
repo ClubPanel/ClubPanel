@@ -1,6 +1,6 @@
 import {Config} from "./config";
 import {SessionOptions} from "express-session";
-import {IMenuLink} from "../../../components/menu/menuItems";
+import {IMenuLink} from "../../../components/menu/IMenuLink";
 
 export interface MainConfigClient extends Config {
   name: string;

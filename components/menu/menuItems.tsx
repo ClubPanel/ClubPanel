@@ -1,12 +1,7 @@
 import React from "react";
 import MenuCategory from "./menuCategory";
 import MenuLink from "./menuLink";
-
-export interface IMenuLink {
-  text: string;
-  url: string;
-  aria: string;
-}
+import {IMenuLink} from "./IMenuLink";
 
 const MenuItems = ({ sidebar } : { sidebar: Record<string, IMenuLink[]> }) : JSX.Element => {
   const list: JSX.Element[] = [];
